@@ -10,32 +10,8 @@ type Inputs= {
 }
 
 function Registration() {
-  const [name,setName] = useState('');
-  const [email,setEmail] = useState('');
-  const [password,setPassword] = useState('');
   const [token,setToken] = useState('')
   const [erros,setErros] = useState([])
-  
-  const handleRegister = () =>{
-    const requestOptions ={
-      method: 'POST',
-      headers:{'Content-Type': 'application/json'},
-      body: JSON.stringify({name: name,email:email,password:password},
-      )
-    };
-    fetch("https://api-for-missions-and-railways.herokuapp.com/users",requestOptions,)
-      .then((response)=> response.json()
-      )
-      .then((response) =>{
-        setToken(response)
-      })
-      .catch((error)=>{
-        setErros(error)
-        console.log(error)
-      })
-      return false;
-  }
-
    //バリデーション
     const {
       register,
@@ -48,10 +24,22 @@ function Registration() {
     });
 
   const handleOnSubmit: SubmitHandler<Inputs> = (values) => {
-    setName(values.name)
-    setEmail(values.email)
-    setPassword(values.password)
-    handleRegister()
+    const requestOptions ={
+      method: 'POST',
+      headers:{'Content-Type': 'application/json'},
+      body: JSON.stringify({name: values.name,email:values.email,password:values.password},
+      )
+    };
+    fetch("https://api-for-missions-and-railways.herokuapp.com/users",requestOptions,)
+      .then((response)=> response.json()
+      )
+      .then((response) =>{
+        setToken(response.token)
+      })
+      .catch((error)=>{
+        setErros(error)
+      })
+      return false;
   }
   
 
