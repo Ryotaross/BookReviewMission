@@ -10,8 +10,10 @@ type Inputs= {
 }
 
 function Registration() {
-  const [token,setToken] = useState('')
-  const [erros,setErros] = useState([])
+  const[token,setToken] = useState('')
+  const[errorCodes,setErrorCodes] = useState([])
+  const[ErrorMessageJP,setErrorMessageJP] = useState([])
+  const[ErrorMessageEN,setErrorMessageEN] = useState([])
    //バリデーション
     const {
       register,
@@ -35,9 +37,11 @@ function Registration() {
       )
       .then((response) =>{
         setToken(response.token)
+        setErrorCodes(response.ErrorCode)
+        setErrorMessageJP(response.ErrorMessageJP)
+        setErrorMessageEN(response.ErrorMessageEN)
       })
       .catch((error)=>{
-        setErros(error)
       })
       return false;
   }
