@@ -42,7 +42,7 @@ function Signin() {
         localStorage.setItem('token', response.token)
         if(response.token === '' || response.token === null || response.token === undefined){
         }else{
-          return(<Redirect to="/index" />)
+          return <Redirect to="/index" />
         }
       })
       .catch((error)=>{
