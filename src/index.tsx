@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import Signup from './pages/Signup';
 import Login from './pages/Login';
+import Index from './pages/Index';
 import reportWebVitals from './reportWebVitals';
 import {
   BrowserRouter as Router,
@@ -15,6 +16,9 @@ ReactDOM.render(
   <React.StrictMode>
     <Router>
       <Switch>
+        <Route path="/">
+          <Index />
+        </Route>
         <Route path="/signup">
           <Signup />
         </Route>
