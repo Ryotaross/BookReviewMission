@@ -1,6 +1,7 @@
 import React from 'react';
 import '../style/Form.css';
 import { useState,useEffect } from 'react';
+import { Redirect } from 'react-router-dom';
 import axios from 'axios';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
@@ -38,7 +39,7 @@ function BookIndex() {
       })
       .then(res => {
         setLoginUser(res.data);
-        console.log(res.data)
+        console.log(loginUser);
       })
     }
   },[])
@@ -75,10 +76,14 @@ function BookIndex() {
 
   return (
     <>
-    <p>{loginUser.name}</p>
-      <Box sx={{ minWidth: 275}} >
-        <Card variant="outlined" >{card}</Card>
-      </Box>
+    {token === '' || token === null || token === undefined?<Redirect to="/login" />:
+      <div>
+        <p>{loginUser.name}</p>
+        <Box sx={{ minWidth: 275}} >
+          <Card variant="outlined" >{card}</Card>
+        </Box>
+      </div>
+    }
     </>
   );
 }
