@@ -16,7 +16,7 @@ ReactDOM.render(
   <React.StrictMode>
     <Router>
       <Switch>
-        <Route path="/">
+        <Route path="/index">
           <Index />
         </Route>
         <Route path="/signup">

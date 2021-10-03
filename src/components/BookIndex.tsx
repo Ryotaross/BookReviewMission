@@ -8,16 +8,39 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
+import { isSetAccessor } from 'typescript';
 
 
 function BookIndex() {
   const[reviews,setReviews] = useState([{id: "",title: "",url: "",detail: "",review: "",reviewer: "",}])
+  const[loginUser,setLoginUser] = useState<any>([{name:'ゲスト'}]);
+  const token = localStorage.getItem('token');
 
   useEffect(()=>{
-    axios.get(`https://api-for-missions-and-railways.herokuapp.com/public/books?offset=10`)
+    if(token === "" || token === null || token === undefined){
+      axios.get(`https://api-for-missions-and-railways.herokuapp.com/public/books?offset=10`)
       .then(res => {
         setReviews( res.data );
       })
+    }else{
+      axios.get(`https://api-for-missions-and-railways.herokuapp.com/books?offset=10`,{
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      })
+      .then(res => {
+        setReviews( res.data );
+      })
+      axios.get('https://api-for-missions-and-railways.herokuapp.com/users', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      })
+      .then(res => {
+        setLoginUser(res.data);
+        console.log(res.data)
+      })
+    }
   },[])
 
   const bull = (
@@ -52,6 +75,7 @@ function BookIndex() {
 
   return (
     <>
+    <p>{loginUser.name}</p>
       <Box sx={{ minWidth: 275}} >
         <Card variant="outlined" >{card}</Card>
       </Box>

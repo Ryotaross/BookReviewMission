@@ -41,6 +41,7 @@ function Registration() {
         setErrorCodes(response.ErrorCode)
         setErrorMessageJP(response.ErrorMessageJP)
         setErrorMessageEN(response.ErrorMessageEN)
+        localStorage.setItem('token', response.token)
       })
       .catch((error)=>{
       })
