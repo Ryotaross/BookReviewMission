@@ -12,7 +12,7 @@ import Typography from '@mui/material/Typography';
 import { isSetAccessor } from 'typescript';
 import { reverse } from 'dns';
 
-function DetailBook() {
+function BookDetail() {
   const[review,setReview] = useState({id: "",title: "",url: "",detail: "",review: "",reviewer: ""})
   const[loginUser,setLoginUser] = useState<any>([{name:'ゲスト'}]);
   const token = localStorage.getItem('token');
@@ -84,4 +84,4 @@ function DetailBook() {
   );
 }
 
-export default DetailBook;
+export default BookDetail;

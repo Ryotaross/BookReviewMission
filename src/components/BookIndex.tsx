@@ -60,6 +60,12 @@ function BookIndex() {
   })
   }
 
+  const handleEdit = (event: any)=> {
+    history.push({
+      pathname: '/edit/' + event.target.value
+  })
+  }
+
   const card = (
     reviews.map((review) =>
     <React.Fragment key={review.id}>
@@ -75,6 +81,7 @@ function BookIndex() {
         </Typography>
         <CardActions>
         <Button size="small" onClick={handleDetail} value={review.id}>Learn More</Button>
+        <Button size="small" onClick={handleEdit} value={review.id}>Learn Edit</Button>
       </CardActions>
       </CardContent>
     </React.Fragment>

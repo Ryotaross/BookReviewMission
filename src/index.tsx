@@ -7,6 +7,7 @@ import Index from './pages/Index';
 import Profile from './pages/Profile';
 import New from './pages/New';
 import Detail from './pages/Detail';
+import Edit from './pages/Edit';
 import reportWebVitals from './reportWebVitals';
 import {
   BrowserRouter as Router,
@@ -35,6 +36,7 @@ ReactDOM.render(
           <New />
         </Route>
         <Route exact path="/detail/:id" component={Detail} />
+        <Route exact path="/edit/:id" component={Edit} />
       </Switch>
     </Router>
   </React.StrictMode>,
