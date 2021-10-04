@@ -46,7 +46,7 @@ function Signin() {
         if(response.token === '' || response.token === null || response.token === undefined){
           return false
         }else{
-          history.replace('/index');
+          history.replace('/');
         }
       })
       .catch((error)=>{
@@ -94,7 +94,7 @@ function Signin() {
             </a>
           </form>
         </div>
-      :<Redirect to="/index" />}
+      :<Redirect to="/" />}
     </>
   );
 }

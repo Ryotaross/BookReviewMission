@@ -5,6 +5,8 @@ import Signup from './pages/Signup';
 import Login from './pages/Login';
 import Index from './pages/Index';
 import Profile from './pages/Profile';
+import New from './pages/New';
+import Detail from './pages/Detail';
 import reportWebVitals from './reportWebVitals';
 import {
   BrowserRouter as Router,
@@ -17,17 +19,23 @@ ReactDOM.render(
   <React.StrictMode>
     <Router>
       <Switch>
-        <Route path="/index">
+        <Route exact path="/">
           <Index />
         </Route>
-        <Route path="/signup">
+        <Route exact path="/signup">
           <Signup />
         </Route>
-        <Route path="/login">
+        <Route exact path="/login">
           <Login />
         </Route>
-        <Route path="/profile">
+        <Route exact path="/profile">
           <Profile />
+        </Route>
+        <Route exact path="/new">
+          <New />
+        </Route>
+        <Route exact path="/detail/:id">
+          <Detail />
         </Route>
       </Switch>
     </Router>

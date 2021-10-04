@@ -46,7 +46,7 @@ function Registration() {
         if(response.token === '' || response.token === null || response.token === undefined){
           return false
         }else{
-          history.replace('/index');
+          history.replace('/');
         }
       })
       .catch((error)=>{
@@ -107,7 +107,7 @@ function Registration() {
             </a>
           </form>
         </div>
-      :<Redirect to="/index" />}
+      :<Redirect to="/" />}
     </>
   );
 }

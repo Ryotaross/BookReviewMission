@@ -6,31 +6,19 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import axios from 'axios';
 
 type Inputs= {
-  name:string
+  title:string
+  url:string
+  detail:string
+  review:string
 }
 
 
-function ProfileUpdate() {
+function NewReview() {
   const[errorCodes,setErrorCodes] = useState([])
   const[ErrorMessageJP,setErrorMessageJP] = useState([])
   const[ErrorMessageEN,setErrorMessageEN] = useState([])
   const[loginUser,setLoginUser] = useState<any>([{name:'ゲスト'}]);
   const token = localStorage.getItem('token');
-
-  useEffect(()=>{
-    if(token === "" || token === 'null' || token === 'undefined'){
-      
-    }else{
-      axios.get('https://api-for-missions-and-railways.herokuapp.com/users', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        }
-      })
-      .then(res => {
-        setLoginUser(res.data);
-      })
-    }
-  },[])
 
   const {
     register,
@@ -44,12 +32,12 @@ function ProfileUpdate() {
 
   const handleOnSubmit: SubmitHandler<Inputs> = (values) => {
     const requestOptions ={
-      method: 'PUT',
+      method: 'POST',
       headers:{ Authorization: `Bearer ${token}`,},
-      body: JSON.stringify({name:values.name},
+      body: JSON.stringify({title:values.title,url:values.url,detail:values.detail,review:values.review},
       )
     };
-    fetch("https://api-for-missions-and-railways.herokuapp.com/users",requestOptions,)
+    fetch("https://api-for-missions-and-railways.herokuapp.com/books",requestOptions,)
       .then((response)=> response.json()
       )
       .then((response) =>{
@@ -66,24 +54,48 @@ function ProfileUpdate() {
     <>
       {token === '' || token === null || token === 'undefined'?<Redirect to="/login" />:
         <div className="formBody">
-          <h2>ユーザー名変更</h2>
+          <h2>レビュー投稿</h2>
           <p>{errorCodes} {ErrorMessageJP}</p>
           <form onSubmit={handleSubmit(handleOnSubmit)}>
             <input
+              placeholder="タイトル"
               type="text"
-              defaultValue={loginUser.name}
-              {...register("name", {
+              {...register("title", {
                 required: true,
-                maxLength: 10,
-                pattern: /[0-9a-zA-Z]/,
               })}
             />
             <div className="error">
-              {errors.name?.types?.required && "名前が入力されていません"}
-              {errors.name?.types?.maxLength && "10文字以上が入力されています"}
-              {errors.name?.types?.pattern && "英数字以外の文字が含まれています"}
+              {errors.title?.types?.required && "タイトルが入力されていません"}
             </div>
-            <button type="submit">変更</button>
+            <input
+              placeholder="商品URL"
+              type="text"
+              {...register("url", {
+                required: true,
+              })}
+            />
+            <div className="error">
+              {errors.url?.types?.required && "商品URLが入力されていません"}
+            </div>
+            <textarea
+              placeholder="あらすじ"
+              {...register("detail", {
+                required: true,
+              })}
+            />
+            <div className="error">
+              {errors.detail?.types?.required && "あらすじが入力されていません"}
+            </div>
+            <textarea
+              placeholder="レビュー"
+              {...register("review", {
+                required: true,
+              })}
+            />
+            <div className="error">
+              {errors.review?.types?.required && "レビューが入力されていません"}
+            </div>
+            <button type="submit">投稿</button>
           </form>
         </div>
       }
@@ -91,4 +103,4 @@ function ProfileUpdate() {
   );
 }
 
-export default ProfileUpdate;
+export default NewReview;
