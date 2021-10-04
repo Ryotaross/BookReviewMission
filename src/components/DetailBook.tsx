@@ -82,6 +82,7 @@ function DetailBook() {
         <Box sx={{ minWidth: 275}} >
           <Card variant="outlined" >{card}</Card>
         </Box>
+       
       </div>
     }
     </>

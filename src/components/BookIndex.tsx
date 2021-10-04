@@ -1,7 +1,7 @@
 import React from 'react';
 import '../style/Form.css';
 import { useState,useEffect } from 'react';
-import { Redirect,useHistory } from 'react-router-dom';
+import { Redirect,useHistory,withRouter } from 'react-router-dom';
 import axios from 'axios';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
@@ -54,7 +54,7 @@ function BookIndex() {
     </Box>
   );
   
-  const handleDetail = (event)=> {
+  const handleDetail = (event: any)=> {
     history.push({
       pathname: '/detail/' + event.target.value,
       state: { id: event.target.value }
@@ -96,4 +96,4 @@ function BookIndex() {
   );
 }
 
-export default BookIndex;
+export default withRouter(BookIndex);
