@@ -34,9 +34,7 @@ ReactDOM.render(
         <Route exact path="/new">
           <New />
         </Route>
-        <Route path="/detail/:id">
-          <Detail />
-        </Route>
+        <Route exact path="/detail/:id" component={Detail} />
       </Switch>
     </Router>
   </React.StrictMode>,

@@ -1,7 +1,7 @@
 import React from 'react';
 import '../style/Form.css';
 import { useState,useEffect } from 'react';
-import { Redirect } from 'react-router-dom';
+import { Redirect,useParams,useHistory } from 'react-router-dom';
 import axios from 'axios';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
@@ -13,33 +13,23 @@ import { isSetAccessor } from 'typescript';
 import { reverse } from 'dns';
 
 function DetailBook() {
-  const[reviews,setReviews] = useState([{id: "",title: "",url: "",detail: "",review: "",reviewer: "",}])
+  const[review,setReview] = useState({id: "",title: "",url: "",detail: "",review: "",reviewer: ""})
   const[loginUser,setLoginUser] = useState<any>([{name:'ゲスト'}]);
   const token = localStorage.getItem('token');
+  const Url: { id: string } = useParams();
+  const history = useHistory();
 
   useEffect(()=>{
     if(token === "" || token === 'null' || token === 'undefined'){
-      axios.get(`https://api-for-missions-and-railways.herokuapp.com/public/books`)
-      .then(res => {
-        setReviews( res.data );
-      })
+      history.push('/login')
     }else{
-      axios.get(`https://api-for-missions-and-railways.herokuapp.com/books`,{
+      axios.get(`https://api-for-missions-and-railways.herokuapp.com/books/` + Url.id,{
         headers: {
           Authorization: `Bearer ${token}`,
         }
       })
       .then(res => {
-        setReviews( res.data );
-      })
-      axios.get('https://api-for-missions-and-railways.herokuapp.com/users', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        }
-      })
-      .then(res => {
-        setLoginUser(res.data);
-        console.log(loginUser);
+        setReview( res.data );
       })
     }
   },[])
@@ -54,7 +44,7 @@ function DetailBook() {
   );
   
   const card = (
-    reviews.map((review) =>
+    
     <React.Fragment key={review.id}>
       <CardContent sx={{ mx: "auto",my:1,width:600,border:1,borderColor: 'grey.500',boxShadow: 1}}>
         <Typography sx={{ ml:1,fontSize: 14 ,textAlign:'left'}} color="text.secondary" gutterBottom>
@@ -66,12 +56,18 @@ function DetailBook() {
         <Typography sx={{ my:1,ml:2,fontSize: 14 ,textAlign:'left'}} color="text.secondary" gutterBottom>
           {review.title}
         </Typography>
+        <Typography sx={{ my:1,ml:2,fontSize: 14 ,textAlign:'left'}} color="text.secondary" gutterBottom>
+          {review.detail}
+        </Typography>
+        <Typography sx={{ my:1,ml:2,fontSize: 14 ,textAlign:'left'}} color="text.secondary" gutterBottom>
+          {review.url}
+        </Typography>
         <CardActions>
         <Button size="small">Learn More</Button>
       </CardActions>
       </CardContent>
     </React.Fragment>
-    )
+    
   );
 
   return (
@@ -82,7 +78,6 @@ function DetailBook() {
         <Box sx={{ minWidth: 275}} >
           <Card variant="outlined" >{card}</Card>
         </Box>
-       
       </div>
     }
     </>
