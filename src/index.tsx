@@ -34,7 +34,7 @@ ReactDOM.render(
         <Route exact path="/new">
           <New />
         </Route>
-        <Route exact path="/detail/:id">
+        <Route path="/detail/:id">
           <Detail />
         </Route>
       </Switch>

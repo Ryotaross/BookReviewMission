@@ -1,7 +1,7 @@
 import React from 'react';
 import '../style/Form.css';
 import { useState,useEffect } from 'react';
-import { Redirect } from 'react-router-dom';
+import { Redirect,useHistory } from 'react-router-dom';
 import axios from 'axios';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
@@ -16,6 +16,7 @@ function BookIndex() {
   const[reviews,setReviews] = useState([{id: "",title: "",url: "",detail: "",review: "",reviewer: "",}])
   const[loginUser,setLoginUser] = useState<any>([{name:'ゲスト'}]);
   const token = localStorage.getItem('token');
+  const history = useHistory();
 
   useEffect(()=>{
     if(token === "" || token === 'null' || token === 'undefined'){
@@ -53,6 +54,13 @@ function BookIndex() {
     </Box>
   );
   
+  const handleDetail = (event)=> {
+    history.push({
+      pathname: '/detail/' + event.target.value,
+      state: { id: event.target.value }
+  })
+  }
+
   const card = (
     reviews.map((review) =>
     <React.Fragment key={review.id}>
@@ -67,7 +75,7 @@ function BookIndex() {
           {review.title}
         </Typography>
         <CardActions>
-        <Button size="small">Learn More</Button>
+        <Button size="small" onClick={handleDetail} value={review.id}>Learn More</Button>
       </CardActions>
       </CardContent>
     </React.Fragment>
