@@ -4,6 +4,7 @@ import './index.css';
 import Signup from './pages/Signup';
 import Login from './pages/Login';
 import Index from './pages/Index';
+import Profile from './pages/Profile';
 import reportWebVitals from './reportWebVitals';
 import {
   BrowserRouter as Router,
@@ -24,6 +25,9 @@ ReactDOM.render(
         </Route>
         <Route path="/login">
           <Login />
+        </Route>
+        <Route path="/profile">
+          <Profile />
         </Route>
       </Switch>
     </Router>
