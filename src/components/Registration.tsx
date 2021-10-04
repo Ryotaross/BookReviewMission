@@ -1,7 +1,7 @@
 import React from 'react';
 import '../style/Form.css';
 import { useState } from 'react';
-import { Redirect } from 'react-router-dom';
+import { Redirect,useHistory } from 'react-router-dom';
 import { useForm, SubmitHandler } from 'react-hook-form';
 
 type Inputs= {
@@ -15,6 +15,7 @@ function Registration() {
   const[ErrorMessageJP,setErrorMessageJP] = useState([])
   const[ErrorMessageEN,setErrorMessageEN] = useState([])
   const token = localStorage.getItem('token');
+  const history = useHistory();
 
    //バリデーション
     const {
@@ -42,6 +43,11 @@ function Registration() {
         setErrorMessageJP(response.ErrorMessageJP)
         setErrorMessageEN(response.ErrorMessageEN)
         localStorage.setItem('token', response.token)
+        if(response.token === '' || response.token === null || response.token === undefined){
+          return false
+        }else{
+          history.replace('/index');
+        }
       })
       .catch((error)=>{
       })
@@ -50,9 +56,10 @@ function Registration() {
   
   return (
     <>
-      {token === '' || token === null || token === undefined?
+      {token === '' || token === null || token === 'undefined'?
         <div className="formBody">
           <h2>新規登録</h2>
+          <p>{errorCodes} {ErrorMessageJP}</p>
           <form onSubmit={handleSubmit(handleOnSubmit)}>
             <input
               placeholder="ユーザーネーム"

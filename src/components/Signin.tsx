@@ -9,6 +9,7 @@ type Inputs= {
   password:string
 }
 
+
 function Signin() {
   const[errorCodes,setErrorCodes] = useState([])
   const[ErrorMessageJP,setErrorMessageJP] = useState([])
@@ -25,8 +26,6 @@ function Signin() {
     criteriaMode: "all",
     shouldFocusError: false,
   });
-
-  
 
   const handleOnSubmit: SubmitHandler<Inputs> = (values) => {
     const requestOptions ={
@@ -57,7 +56,7 @@ function Signin() {
 
   return (
     <>
-      {token === '' || token === null || token === undefined?
+      {token === '' || token === null || token === 'undefined'?
         <div className="formBody">
           <h2>ログイン</h2>
           <p>{errorCodes} {ErrorMessageJP}</p>

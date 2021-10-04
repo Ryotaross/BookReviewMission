@@ -11,14 +11,13 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { isSetAccessor } from 'typescript';
 
-
 function BookIndex() {
   const[reviews,setReviews] = useState([{id: "",title: "",url: "",detail: "",review: "",reviewer: "",}])
   const[loginUser,setLoginUser] = useState<any>([{name:'ゲスト'}]);
   const token = localStorage.getItem('token');
 
   useEffect(()=>{
-    if(token === "" || token === null || token === undefined){
+    if(token === "" || token === 'null' || token === 'undefined'){
       axios.get(`https://api-for-missions-and-railways.herokuapp.com/public/books?offset=10`)
       .then(res => {
         setReviews( res.data );
