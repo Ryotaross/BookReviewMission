@@ -97,39 +97,39 @@ function BookEdit() {
               defaultValue={review.title}
               type="text"
               {...register("title", {
-                required: true,
+                minLength: 0,
               })}
             />
             <div className="error">
-              {errors.title?.types?.required && "タイトルが入力されていません"}
+              {errors.title?.types?.minLength && "タイトルが入力されていません"}
             </div>
             <input
               defaultValue={review.url}
               type="text"
               {...register("url", {
-                required: true,
+                minLength: 0,
               })}
             />
             <div className="error">
-              {errors.url?.types?.required && "商品URLが入力されていません"}
+              {errors.url?.types?.minLength && "商品URLが入力されていません"}
             </div>
             <textarea
               defaultValue={review.detail}
               {...register("detail", {
-                required: true,
+                minLength: 0,
               })}
             />
             <div className="error">
-              {errors.detail?.types?.required && "あらすじが入力されていません"}
+              {errors.detail?.types?.minLength && "あらすじが入力されていません"}
             </div>
             <textarea
               defaultValue={review.review}
               {...register("review", {
-                required: true,
+                minLength: 0,
               })}
             />
             <div className="error">
-              {errors.review?.types?.required && "レビューが入力されていません"}
+              {errors.review?.types?.minLength&& "レビューが入力されていません"}
             </div>
             <button type="submit">更新</button>
           </form>

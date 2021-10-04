@@ -13,7 +13,7 @@ import { isSetAccessor } from 'typescript';
 import { reverse } from 'dns';
 
 function BookDetail() {
-  const[review,setReview] = useState({id: "",title: "",url: "",detail: "",review: "",reviewer: ""})
+  const[review,setReview] = useState({id: "",title: "",url: "",detail: "",review: "",reviewer: "",isMine:true})
   const[loginUser,setLoginUser] = useState<any>([{name:'ゲスト'}]);
   const token = localStorage.getItem('token');
   const Url: { id: string } = useParams();
@@ -43,6 +43,12 @@ function BookDetail() {
     </Box>
   );
   
+  const handleEdit = (event: any)=> {
+    history.push({
+      pathname: '/edit/' + event.target.value
+  })
+  }
+
   const card = (
     
     <React.Fragment key={review.id}>
@@ -63,7 +69,7 @@ function BookDetail() {
           {review.url}
         </Typography>
         <CardActions>
-        <Button size="small">Learn More</Button>
+        {review.isMine === true?<Button size="small" onClick={handleEdit} value={review.id}>Learn Edit</Button>:<span></span>}
       </CardActions>
       </CardContent>
     </React.Fragment>
