@@ -1,7 +1,7 @@
 import React from 'react';
 import '../style/Form.css';
 import { useState } from 'react';
-import { Redirect } from 'react-router-dom';
+import { Redirect,useHistory } from 'react-router-dom';
 import { useForm, SubmitHandler } from 'react-hook-form';
 
 type Inputs= {
@@ -14,6 +14,7 @@ function Signin() {
   const[ErrorMessageJP,setErrorMessageJP] = useState([])
   const[ErrorMessageEN,setErrorMessageEN] = useState([])
   const token = localStorage.getItem('token');
+  const history = useHistory();
 
   const {
     register,
@@ -24,6 +25,8 @@ function Signin() {
     criteriaMode: "all",
     shouldFocusError: false,
   });
+
+  
 
   const handleOnSubmit: SubmitHandler<Inputs> = (values) => {
     const requestOptions ={
@@ -40,9 +43,11 @@ function Signin() {
         setErrorMessageJP(response.ErrorMessageJP)
         setErrorMessageEN(response.ErrorMessageEN)
         localStorage.setItem('token', response.token)
+        console.log(response.token)
         if(response.token === '' || response.token === null || response.token === undefined){
+          return false
         }else{
-          return <Redirect to="/index" />
+          history.replace('/index');
         }
       })
       .catch((error)=>{

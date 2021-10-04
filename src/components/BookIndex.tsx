@@ -76,7 +76,7 @@ function BookIndex() {
 
   return (
     <>
-    {token === '' || token === null || token === undefined?<Redirect to="/login" />:
+    {token === '' || token === null || token === 'undefined'?<Redirect to="/login" />:
       <div>
         <p>{loginUser.name}</p>
         <Box sx={{ minWidth: 275}} >
