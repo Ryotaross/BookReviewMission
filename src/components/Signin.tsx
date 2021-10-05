@@ -9,7 +9,6 @@ type Inputs= {
   password:string
 }
 
-
 function Signin() {
   const[errorCodes,setErrorCodes] = useState([])
   const[ErrorMessageJP,setErrorMessageJP] = useState([])
@@ -43,15 +42,12 @@ function Signin() {
         setErrorMessageEN(response.ErrorMessageEN)
         localStorage.setItem('token', response.token)
         console.log(response.token)
-        if(response.token === '' || response.token === null || response.token === undefined){
-          return false
-        }else{
+        if(response.token !== '' || response.token !== null || response.token !== undefined){
           history.replace('/');
         }
       })
       .catch((error)=>{
       })
-      return false;
   }
 
   return (

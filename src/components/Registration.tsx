@@ -32,7 +32,7 @@ function Registration() {
     const requestOptions ={
       method: 'POST',
       headers:{'Content-Type': 'application/json'},
-      body: JSON.stringify({name: values.name,email:values.email,password:values.password},
+      body: JSON.stringify({name:values.name,email:values.email,password:values.password},
       )
     };
     fetch("https://api-for-missions-and-railways.herokuapp.com/users",requestOptions,)
@@ -43,15 +43,12 @@ function Registration() {
         setErrorMessageJP(response.ErrorMessageJP)
         setErrorMessageEN(response.ErrorMessageEN)
         localStorage.setItem('token', response.token)
-        if(response.token === '' || response.token === null || response.token === undefined){
-          return false
-        }else{
+        if(response.token !== '' || response.token !== null || response.token !== undefined){
           history.replace('/');
         }
       })
       .catch((error)=>{
       })
-      return false;
   }
   
   return (

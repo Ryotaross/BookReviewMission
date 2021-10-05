@@ -9,12 +9,9 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import { isSetAccessor } from 'typescript';
-import { reverse } from 'dns';
 
 function BookDetail() {
   const[review,setReview] = useState({id: "",title: "",url: "",detail: "",review: "",reviewer: "",isMine:true})
-  const[loginUser,setLoginUser] = useState<any>([{name:'ゲスト'}]);
   const token = localStorage.getItem('token');
   const Url: { id: string } = useParams();
   const history = useHistory();
@@ -34,6 +31,12 @@ function BookDetail() {
     }
   },[])
 
+  const handleEdit = (event: any)=> {
+    history.push({
+      pathname: '/edit/' + event.target.value
+  })
+  }
+
   const bull = (
     <Box
       component="span"
@@ -42,12 +45,6 @@ function BookDetail() {
       •
     </Box>
   );
-  
-  const handleEdit = (event: any)=> {
-    history.push({
-      pathname: '/edit/' + event.target.value
-  })
-  }
 
   const card = (
     
@@ -80,7 +77,6 @@ function BookDetail() {
     <>
     {token === '' || token === null || token === 'undefined'?<Redirect to="/login" />:
       <div>
-        <p>{loginUser.name}</p>
         <Box sx={{ minWidth: 275}} >
           <Card variant="outlined" >{card}</Card>
         </Box>

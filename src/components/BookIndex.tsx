@@ -9,12 +9,10 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import { isSetAccessor } from 'typescript';
-import { reverse } from 'dns';
 
 function BookIndex() {
   const[reviews,setReviews] = useState([{id: "",title: "",url: "",detail: "",review: "",reviewer: "",}])
-  const[loginUser,setLoginUser] = useState<any>([{name:'ゲスト'}]);
+  const[loginUser,setLoginUser] = useState<any>([{name:''}]);
   const token = localStorage.getItem('token');
   const history = useHistory();
 
@@ -45,6 +43,12 @@ function BookIndex() {
     }
   },[])
 
+  const handleDetail = (event: any)=> {
+    history.push({
+      pathname: '/detail/' + event.target.value
+  })
+  }
+
   const bull = (
     <Box
       component="span"
@@ -53,12 +57,6 @@ function BookIndex() {
       •
     </Box>
   );
-  
-  const handleDetail = (event: any)=> {
-    history.push({
-      pathname: '/detail/' + event.target.value
-  })
-  }
 
   const card = (
     reviews.map((review) =>

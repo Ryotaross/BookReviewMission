@@ -17,7 +17,6 @@ function BookEdit() {
   const[errorCodes,setErrorCodes] = useState([])
   const[ErrorMessageJP,setErrorMessageJP] = useState([])
   const[ErrorMessageEN,setErrorMessageEN] = useState([])
-  const[loginUser,setLoginUser] = useState<any>([{name:'ゲスト'}]);
   const token = localStorage.getItem('token');
   const Url: { id: string } = useParams();
   const history = useHistory();
@@ -61,10 +60,12 @@ function BookEdit() {
         setErrorCodes(response.ErrorCode)
         setErrorMessageJP(response.ErrorMessageJP)
         setErrorMessageEN(response.ErrorMessageEN)
+        history.push({
+          pathname: '/detail/' + Url.id
+        })
       })
       .catch((error)=>{
       })
-      return false;
   }
 
   const handleDelete = () => {
@@ -83,7 +84,6 @@ function BookEdit() {
       })
       .catch((error)=>{
       })
-      return false;
   }
 
   return (

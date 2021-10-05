@@ -9,7 +9,6 @@ type Inputs= {
   name:string
 }
 
-
 function ProfileUpdate() {
   const[errorCodes,setErrorCodes] = useState([])
   const[ErrorMessageJP,setErrorMessageJP] = useState([])
@@ -19,7 +18,7 @@ function ProfileUpdate() {
 
   useEffect(()=>{
     if(token === "" || token === 'null' || token === 'undefined'){
-      
+      return
     }else{
       axios.get('https://api-for-missions-and-railways.herokuapp.com/users', {
         headers: {
@@ -59,7 +58,6 @@ function ProfileUpdate() {
       })
       .catch((error)=>{
       })
-      return false;
   }
 
   return (

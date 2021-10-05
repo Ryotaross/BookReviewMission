@@ -1,9 +1,8 @@
 import React from 'react';
 import '../style/Form.css';
-import { useState,useEffect } from 'react';
+import { useState } from 'react';
 import { Redirect } from 'react-router-dom';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import axios from 'axios';
 
 type Inputs= {
   title:string
@@ -17,7 +16,6 @@ function NewReview() {
   const[errorCodes,setErrorCodes] = useState([])
   const[ErrorMessageJP,setErrorMessageJP] = useState([])
   const[ErrorMessageEN,setErrorMessageEN] = useState([])
-  const[loginUser,setLoginUser] = useState<any>([{name:'ゲスト'}]);
   const token = localStorage.getItem('token');
 
   const {
@@ -47,7 +45,6 @@ function NewReview() {
       })
       .catch((error)=>{
       })
-      return false;
   }
 
   return (
