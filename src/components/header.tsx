@@ -54,7 +54,7 @@ function Header() {
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
         <Toolbar>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1,textAlign:'left' }} onClick={() => {history.replace('/')}}>
+          <Typography variant="h5" component="div" sx={{ flexGrow: 1,textAlign:'left' }} onClick={() => {history.replace('/')}}>
             <MenuBookIcon />Book!
           </Typography>
           {token === '' || token === null || token === 'undefined'? (
