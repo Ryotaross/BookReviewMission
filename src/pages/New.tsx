@@ -1,5 +1,5 @@
 import NewReview from '../components/NewReview';
-import Header from './header';
+import Header from '../components/header';
 import '../App.css';
 
 function New() {

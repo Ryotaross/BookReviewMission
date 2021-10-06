@@ -1,5 +1,5 @@
 import ProfileUpdate from '../components/ProfileUpdate';
-import Header from './header';
+import Header from '../components/header';
 import '../App.css';
 
 function Profile() {

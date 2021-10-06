@@ -1,5 +1,5 @@
 import BookDetail from '../components/BookDetail';
-import Header from './header';
+import Header from '../components/header';
 import '../App.css';
 
 function Detail() {

@@ -1,6 +1,6 @@
 import React from 'react';
 import BookIndex from '../components/BookIndex';
-import Header from './header';
+import Header from '../components/header';
 import '../App.css';
 
 function Index() {
