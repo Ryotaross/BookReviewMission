@@ -49,7 +49,6 @@ function Header() {
     setAnchorElTool(null);
   };
 
-
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
@@ -59,8 +58,8 @@ function Header() {
           </Typography>
           {token === '' || token === null || token === 'undefined'? (
             <div>
-              <Button color="inherit" onClick={() => {history.replace('/signup')}}><PersonAddIcon />ユーザー登録</Button>
-              <Button color="inherit" onClick={() => {history.replace('/login')}}><LoginIcon />ログイン</Button>
+              <Button color="inherit" onClick={() => {history.replace('/signup')}}><PersonAddIcon /></Button>
+              <Button color="inherit" onClick={() => {history.replace('/login')}}><LoginIcon /></Button>
             </div>
           ):(
             <div>
