@@ -7,6 +7,12 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import axios from 'axios';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
+import { CardMedia } from '@mui/material';
+import Typography from '@mui/material/Typography';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import { blueGrey } from '@mui/material/colors';
+import { grey } from '@mui/material/colors';
 
 type Inputs= {
   title:string
@@ -89,6 +95,22 @@ function BookEdit() {
       })
   }
 
+  const card = (
+    <React.Fragment key={review.id}>
+      <CardMedia sx={{ width:{ xs: 400, md: 800 },height:60,m:'auto',pt:2,fontSize: 20,bgcolor:blueGrey[800],color:grey[50]}}>
+          レビュー修正
+      </CardMedia>
+      <CardContent sx={{m:'auto',width:{ xs: 400, md: 800 },border:1,borderColor: 'grey.500',boxShadow: 1}}>
+        <form onSubmit={handleSubmit(handleOnSubmit)}>
+
+        </form>
+        <CardActions>
+        
+        </CardActions>
+      </CardContent>
+    </React.Fragment>
+  );
+
   return (
     <>
       {token === '' || token === null || token === 'undefined'?<Redirect to="/login" />:
@@ -138,7 +160,7 @@ function BookEdit() {
           </form>
           　<button type="submit" onClick={handleDelete}>削除</button>
           <Box sx={{ minWidth: 275}} >
-          <Card sx={{px:{ xs: 3, md: 10 },py:1}}>aaa</Card>
+          <Card sx={{px:{ xs: 3, md: 10 },py:1}}>{card}</Card>
         </Box>
         </div>
       }

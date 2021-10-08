@@ -96,7 +96,6 @@ function BookDetail() {
         </CardActions>
       </CardContent>
     </React.Fragment>
-    
   );
 
   return (
