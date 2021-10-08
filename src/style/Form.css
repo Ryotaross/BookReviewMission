@@ -111,3 +111,26 @@ body{
   margin-top:0;
   margin-bottom:1rem;
 }
+.indexReviewer{
+  margin: 10px 5px;
+}
+.indexReview{
+  height: calc( 1.5em * 4 );
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  overflow: hidden; 
+}
+
+.indexTitle{
+  height: calc( 1.8em * 2 );
+  line-height: 1.8;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden; 
+}
+.indexTitleName{
+  margin: 5px;
+}

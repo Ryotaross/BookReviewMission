@@ -14,14 +14,11 @@ import RateReviewIcon from '@mui/icons-material/RateReview';
 import CreateIcon from '@mui/icons-material/Create';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import LogoutIcon from '@mui/icons-material/Logout';
-import Switch from '@mui/material/Switch';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import FormGroup from '@mui/material/FormGroup';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
+import { blueGrey } from '@mui/material/colors';
 
 function Header() {
-  const [auth, setAuth] = useState(true);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [anchorElTool, setAnchorElTool] = useState<null | HTMLElement>(null);
   const history = useHistory();
@@ -50,8 +47,8 @@ function Header() {
   };
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
+    <Box sx={{ flexGrow: 1}}>
+      <AppBar position="static" sx={{bgcolor:blueGrey[900]}}>
         <Toolbar>
           <Typography variant="h5" component="div" sx={{ flexGrow: 1,textAlign:'left' }} onClick={() => {history.replace('/')}}>
             <MenuBookIcon />Book!

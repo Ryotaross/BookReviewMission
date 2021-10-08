@@ -3,12 +3,19 @@ import '../style/Form.css';
 import { useState,useEffect } from 'react';
 import { Redirect,useHistory } from 'react-router-dom';
 import axios from 'axios';
+import { Container } from '@mui/material';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
+import { Avatar } from '@mui/material';
+import { blueGrey } from '@mui/material/colors';
+import { grey } from '@mui/material/colors';
+import { lightBlue } from '@mui/material/colors';
+import BookIcon from '@mui/icons-material/Book';
+import PersonIcon from '@mui/icons-material/Person';
 
 function BookIndex() {
   const[reviews,setReviews] = useState([{id: "",title: "",url: "",detail: "",review: "",reviewer: "",}])
@@ -58,22 +65,50 @@ function BookIndex() {
     </Box>
   );
 
+  function stringToColor(string: string) {
+    let hash = 0;
+    let i;
+  
+    /* eslint-disable no-bitwise */
+    for (i = 0; i < string.length; i += 1) {
+      hash = string.charCodeAt(i) + ((hash << 5) - hash);
+    }
+  
+    let color = '#';
+  
+    for (i = 0; i < 3; i += 1) {
+      const value = (hash >> (i * 8)) & 0xff;
+      color += `00${value.toString(16)}`.substr(-2);
+    }
+    /* eslint-enable no-bitwise */
+  
+    return color;
+  }
+  
+  function stringAvatar(name: string) {
+    return {
+      sx: {
+        bgcolor: stringToColor(name),
+      },
+      children: `${name.split(' ')[0][0]}`,
+    };
+  }
   const card = (
     reviews.map((review) =>
     <React.Fragment key={review.id}>
-      <CardContent sx={{ mx: "auto",my:1,width:600,border:1,borderColor: 'grey.500',boxShadow: 1}}>
-        <Typography sx={{ ml:1,fontSize: 14 ,textAlign:'left'}} color="text.secondary" gutterBottom>
-          {review.reviewer}
+      <CardContent sx={{mx:'auto',my:2,width:400,height:350,border:1,bgcolor:blueGrey[800],color:grey[50],borderColor: 'grey.500',boxShadow: 1}}>
+        <Typography sx={{ display:'flex',ml:1,fontSize: 14 ,textAlign:'left',overflow: 'hidden',textOverflow: 'ellipsis',whiteSpace: 'nowrap'}} gutterBottom>
+          <Avatar {...stringAvatar(review.reviewer)} /><div className="indexReviewer">{review.reviewer}</div>
         </Typography>
-        <Typography variant="h5" component="div" sx={{my:2,ml:1,textAlign:'left'}}>
+        <Typography variant="h6" component="div" sx={{my:2,ml:1,textAlign:'left',mb:3}} className="indexReview">
           {review.review}
         </Typography>
-        <Typography sx={{ my:1,ml:2,fontSize: 14 ,textAlign:'left'}} color="text.secondary" gutterBottom>
-          {review.title}
+        <Typography sx={{ display:'flex',my:1,ml:2,fontSize: 13 ,textAlign:'left',color:blueGrey[200]}} gutterBottom className="indexTitle">
+          <BookIcon /><div className="indexTitleName">{review.title}</div>
         </Typography>
         <CardActions>
-        <Button size="small" onClick={handleDetail} value={review.id}>Learn More</Button>
-      </CardActions>
+          <Button size="small" onClick={handleDetail} value={review.id} sx={{color:lightBlue[500]}}>詳しく見る</Button>
+        </CardActions>
       </CardContent>
     </React.Fragment>
     )
@@ -83,9 +118,29 @@ function BookIndex() {
     <>
     {token === '' || token === null || token === 'undefined'?<Redirect to="/login" />:
       <div>
-        <p>{loginUser.name}</p>
+        <Box sx={{bgcolor: 'background.paper',pt: 8,pb: 6}}>
+          <Container maxWidth="sm">
+            <Typography
+              component="h1"
+              variant="h4"
+              align="left"
+              color="text.primary"
+              gutterBottom
+            >
+              本を紹介してみよう！
+            </Typography>
+            <Typography variant="h5" align="left" color="text.secondary" paragraph>
+              書籍のレビューサイトです。<br />
+              気になる書籍のレビューを読んでみよう！<br />
+              お気に入りの書籍のレビューもしてみよう！<br />
+            </Typography>
+          </Container>
+        </Box>
         <Box sx={{ minWidth: 275}} >
-          <Card variant="outlined" >{card}</Card>
+          <Typography variant="body1" align="right" color="text.secondary" sx={{ml:3,display:'flex'}} paragraph>
+            <PersonIcon /><div>{loginUser.name}</div>    
+          </Typography>
+          <Card sx={{display:'flex',flexWrap: 'wrap',alignItems:'flex-start',px:{ xs: 3, md: 10 },py:1,bgcolor:grey[200]}} className='App'>{card}</Card>
         </Box>
       </div>
     }
