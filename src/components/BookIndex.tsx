@@ -56,15 +56,6 @@ function BookIndex() {
   })
   }
 
-  const bull = (
-    <Box
-      component="span"
-      sx={{ display: 'inline-block', mx: '2px', transform: 'scale(0.8)' }}
-    >
-      •
-    </Box>
-  );
-
   function stringToColor(string: string) {
     let hash = 0;
     let i;
@@ -140,7 +131,7 @@ function BookIndex() {
           <Typography variant="body1" align="right" color="text.secondary" sx={{ml:3,display:'flex'}} paragraph>
             <PersonIcon /><div>{loginUser.name}</div>    
           </Typography>
-          <Card sx={{display:'flex',flexWrap: 'wrap',alignItems:'flex-start',px:{ xs: 3, md: 10 },py:1,bgcolor:grey[200]}} className='App'>{card}</Card>
+          <Card sx={{display:'flex',flexWrap: 'wrap',alignItems:'flex-start',px:{ xs: 3, md: 10 },py:1,bgcolor:grey[200]}}>{card}</Card>
         </Box>
       </div>
     }

@@ -9,6 +9,13 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
+import { Link } from '@mui/material';
+import { Avatar } from '@mui/material';
+import BookIcon from '@mui/icons-material/Book';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import { blueGrey } from '@mui/material/colors';
+import { grey } from '@mui/material/colors';
+import { lightBlue } from '@mui/material/colors';
 
 function BookDetail() {
   const[review,setReview] = useState({id: "",title: "",url: "",detail: "",review: "",reviewer: "",isMine:true})
@@ -36,38 +43,57 @@ function BookDetail() {
       pathname: '/edit/' + event.target.value
   })
   }
-
-  const bull = (
-    <Box
-      component="span"
-      sx={{ display: 'inline-block', mx: '2px', transform: 'scale(0.8)' }}
-    >
-      •
-    </Box>
-  );
+  
+  function stringToColor(string: string) {
+    let hash = 0;
+    let i;
+  
+    /* eslint-disable no-bitwise */
+    for (i = 0; i < string.length; i += 1) {
+      hash = string.charCodeAt(i) + ((hash << 5) - hash);
+    }
+  
+    let color = '#';
+  
+    for (i = 0; i < 3; i += 1) {
+      const value = (hash >> (i * 8)) & 0xff;
+      color += `00${value.toString(16)}`.substr(-2);
+    }
+    /* eslint-enable no-bitwise */
+  
+    return color;
+  }
+  
+  function stringAvatar(name: string) {
+    return {
+      sx: {
+        bgcolor: stringToColor(name),
+      },
+      children: `${name.split(' ')[0][0]}`,
+    };
+  }
 
   const card = (
-    
     <React.Fragment key={review.id}>
-      <CardContent sx={{ mx: "auto",my:1,width:600,border:1,borderColor: 'grey.500',boxShadow: 1}}>
-        <Typography sx={{ ml:1,fontSize: 14 ,textAlign:'left'}} color="text.secondary" gutterBottom>
-          {review.reviewer}
+      <CardContent sx={{m:'auto',my:{ xs: 3, md: 10 },width:{ xs: 400, md: 800 },border:1,bgcolor:blueGrey[800],color:grey[50],borderColor: 'grey.500',boxShadow: 1}}>
+        <Typography sx={{ display:'flex',ml:1,fontSize: 14 ,textAlign:'left',overflow: 'hidden',textOverflow: 'ellipsis',whiteSpace: 'nowrap'}} gutterBottom>
+          <Avatar {...stringAvatar(review.reviewer)} /><div className="indexReviewer">{review.reviewer}</div>
         </Typography>
-        <Typography variant="h5" component="div" sx={{my:2,ml:1,textAlign:'left'}}>
+        <Typography variant="h6" component="div" sx={{my:2,ml:1,textAlign:'left',mb:3}}>
           {review.review}
         </Typography>
-        <Typography sx={{ my:1,ml:2,fontSize: 14 ,textAlign:'left'}} color="text.secondary" gutterBottom>
-          {review.title}
+        <Typography sx={{ display:'flex',my:1,ml:2,fontSize: 13 ,textAlign:'left',color:blueGrey[200]}} gutterBottom >
+          <BookIcon /><div className="indexTitleName">{review.title}</div>
         </Typography>
-        <Typography sx={{ my:1,ml:2,fontSize: 14 ,textAlign:'left'}} color="text.secondary" gutterBottom>
-          {review.detail}
-        </Typography>
-        <Typography sx={{ my:1,ml:2,fontSize: 14 ,textAlign:'left'}} color="text.secondary" gutterBottom>
-          {review.url}
+        <Typography sx={{ display:'flex',my:1,ml:2,fontSize: 13 ,textAlign:'left',color:blueGrey[200]}} gutterBottom >
+          <ArrowForwardIosIcon /><div className="indexTitleName">{review.detail}</div>
         </Typography>
         <CardActions>
-        {review.isMine === true?<Button size="small" onClick={handleEdit} value={review.id}>Learn Edit</Button>:<span></span>}
-      </CardActions>
+        <Link href={review.url} underline="hover" sx={{color:lightBlue[500]}}>
+          商品ページを見る
+        </Link>
+          {review.isMine === true?<Button size="small" variant="contained" onClick={handleEdit} value={review.id} sx={{ml:2}}>修正</Button>:<span></span>}
+        </CardActions>
       </CardContent>
     </React.Fragment>
     
@@ -78,7 +104,7 @@ function BookDetail() {
     {token === '' || token === null || token === 'undefined'?<Redirect to="/login" />:
       <div>
         <Box sx={{ minWidth: 275}} >
-          <Card variant="outlined" >{card}</Card>
+          <Card sx={{px:{ xs: 3, md: 10 },py:1}}>{card}</Card>
         </Box>
       </div>
     }
