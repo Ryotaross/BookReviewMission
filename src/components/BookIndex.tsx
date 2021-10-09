@@ -19,7 +19,7 @@ import BookIcon from '@mui/icons-material/Book';
 import PersonIcon from '@mui/icons-material/Person';
 
 function BookIndex() {
-  const[reviews,setReviews] = useState([{id: "",title: "",url: "",detail: "",review: "",reviewer: "",}])
+  const[reviews,setReviews] = useState([{id: "",title: "",url: "",detail: "",review: "",reviewer: "",isMine:true}])
   const[loginUser,setLoginUser] = useState<any>([{name:''}]);
   const token = localStorage.getItem('token');
   const message = localStorage.getItem('message');
@@ -56,6 +56,12 @@ function BookIndex() {
   const handleDetail = (event: any)=> {
     history.push({
       pathname: '/detail/' + event.target.value
+  })
+  }
+
+  const handleEdit = (event: any)=> {
+    history.push({
+      pathname: '/edit/' + event.target.value
   })
   }
 
@@ -102,6 +108,7 @@ function BookIndex() {
         </Typography>
         <CardActions>
           <Button size="small" onClick={handleDetail} value={review.id} sx={{color:lightBlue[500]}}>詳しく見る</Button>
+          {review.isMine === true?<Button size="small" variant="contained" onClick={handleEdit} value={review.id} sx={{ml:2}}>修正</Button>:<span></span>}
         </CardActions>
       </CardContent>
     </React.Fragment>
