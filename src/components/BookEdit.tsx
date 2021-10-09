@@ -9,6 +9,11 @@ import Card from '@mui/material/Card';
 import TextField from '@mui/material/TextField';
 import { Alert } from '@mui/material';
 import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 import { CardMedia } from '@mui/material';
 import CardContent from '@mui/material/CardContent';
 import { blueGrey } from '@mui/material/colors';
@@ -20,6 +25,8 @@ function BookEdit() {
   const[ErrorMessageJP,setErrorMessageJP] = useState([])
   const[ErrorMessageEN,setErrorMessageEN] = useState([])
   const[Error,setError] = useState(false)
+  const[openDelete, setOpenDelete] = useState(false);
+  const[openEdit, setOpenEdit] = useState(false);
   const token = localStorage.getItem('token');
   const Url: { id: string } = useParams();
   const history = useHistory();
@@ -39,7 +46,7 @@ function BookEdit() {
     }
   },[])
 
-  const handleSubmit= () => {
+  const handleEdit= () => {
     setError(false)
     const requestOptions ={
       method: 'PUT',
@@ -92,6 +99,22 @@ function BookEdit() {
       }
   }
 
+  const handleClickOpenEdit = () => {
+    setOpenEdit(true);
+  };
+
+  const handleCloseEdit = () => {
+    setOpenEdit(false);
+  };
+
+  const handleClickOpenDelete = () => {
+    setOpenDelete(true);
+  };
+
+  const handleCloseDelete = () => {
+    setOpenDelete(false);
+  };
+
   const card = (
     <React.Fragment key={review.id}>
       <CardMedia sx={{ width:{ xs: 400, md: 800 },height:60,m:'auto',pt:2,fontSize: 20,bgcolor:blueGrey[800],color:grey[50]}}>
@@ -140,8 +163,60 @@ function BookEdit() {
           onChange={event => setReview({ ...review, review: event.target.value })}
           sx={{my:2}}
         />
-        <Button variant="contained" sx={{m:1}} onClick={handleSubmit} >更新</Button>
-        <Button variant="contained" sx={{m:1}} onClick={handleDelete} color='error'>削除</Button>
+        <Button variant="contained" sx={{m:1}} onClick={handleClickOpenEdit} >更新</Button>
+        <Dialog
+          open={openEdit}
+          onClose={handleCloseEdit}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">
+            以下の内容で更新しますか？
+          </DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              書籍タイトル：{review.title}
+            </DialogContentText>
+            <DialogContentText id="alert-dialog-description">
+              書籍URL：{review.url}
+            </DialogContentText>
+            <DialogContentText id="alert-dialog-description">
+              あらすじ：{review.detail}
+            </DialogContentText>
+            <DialogContentText id="alert-dialog-description">
+              レビュー：{review.review}
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleCloseEdit}>キャンセル</Button>
+            <Button onClick={handleEdit} autoFocus>
+              更新
+            </Button>
+          </DialogActions>
+        </Dialog>
+
+        <Button variant="contained" sx={{m:1}} onClick={handleClickOpenDelete} color='error'>削除</Button>
+        <Dialog
+          open={openDelete}
+          onClose={handleCloseDelete}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">
+            本当に削除しますか？
+          </DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              削除するともとには戻せません
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleCloseDelete}>キャンセル</Button>
+            <Button onClick={handleDelete} autoFocus color='error'>
+              削除
+            </Button>
+          </DialogActions>
+        </Dialog>
       </CardContent>
     </React.Fragment>
   );
