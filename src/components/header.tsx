@@ -27,6 +27,7 @@ function Header() {
 
   const handleLogout = ()=>{
     localStorage.removeItem("token")
+    localStorage.setItem('message', 'ログアウトしました')
     history.replace('/login');
   }
 

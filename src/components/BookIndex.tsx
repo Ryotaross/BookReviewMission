@@ -10,6 +10,7 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
+import { Alert } from '@mui/material';
 import { Avatar } from '@mui/material';
 import { blueGrey } from '@mui/material/colors';
 import { grey } from '@mui/material/colors';
@@ -21,6 +22,7 @@ function BookIndex() {
   const[reviews,setReviews] = useState([{id: "",title: "",url: "",detail: "",review: "",reviewer: "",}])
   const[loginUser,setLoginUser] = useState<any>([{name:''}]);
   const token = localStorage.getItem('token');
+  const message = localStorage.getItem('message');
   const history = useHistory();
 
   useEffect(()=>{
@@ -48,6 +50,7 @@ function BookIndex() {
         console.log(loginUser);
       })
     }
+    setTimeout(() => localStorage.removeItem("message"), 2000);
   },[])
 
   const handleDetail = (event: any)=> {
@@ -109,6 +112,8 @@ function BookIndex() {
     <>
     {token === '' || token === null || token === 'undefined'?<Redirect to="/login" />:
       <div>
+        {message?
+        <Alert severity="success">{message}</Alert>:''}
         <Box sx={{bgcolor: 'background.paper',pt: 8,pb: 6}}>
           <Container maxWidth="sm">
             <Typography

@@ -44,6 +44,7 @@ function Registration() {
         setErrorMessageEN(response.ErrorMessageEN)
         localStorage.setItem('token', response.token)
         if(response.token !== '' || response.token !== null || response.token !== undefined){
+          localStorage.setItem('message', '登録が完了しました')
           history.replace('/');
         }
       })

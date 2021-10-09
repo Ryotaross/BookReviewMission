@@ -3,29 +3,23 @@ import '../style/Form.css';
 import '../style/Edit.css';
 import { useState,useEffect } from 'react';
 import { Redirect,useParams,useHistory } from 'react-router-dom';
-import { useForm, SubmitHandler } from 'react-hook-form';
 import axios from 'axios';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
+import TextField from '@mui/material/TextField';
+import { Alert } from '@mui/material';
+import Button from '@mui/material/Button';
 import { CardMedia } from '@mui/material';
-import Typography from '@mui/material/Typography';
-import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import { blueGrey } from '@mui/material/colors';
 import { grey } from '@mui/material/colors';
-
-type Inputs= {
-  title:string
-  url:string
-  detail:string
-  review:string
-}
 
 function BookEdit() {
   const[review,setReview] = useState({id: "",title: "",url: "",detail: "",review: "",reviewer: ""})
   const[errorCodes,setErrorCodes] = useState([])
   const[ErrorMessageJP,setErrorMessageJP] = useState([])
   const[ErrorMessageEN,setErrorMessageEN] = useState([])
+  const[Error,setError] = useState(false)
   const token = localStorage.getItem('token');
   const Url: { id: string } = useParams();
   const history = useHistory();
@@ -45,21 +39,12 @@ function BookEdit() {
     }
   },[])
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<Inputs>({
-    mode: "onChange",
-    criteriaMode: "all",
-    shouldFocusError: false,
-  });
-
-  const handleOnSubmit: SubmitHandler<Inputs> = (values) => {
+  const handleSubmit= () => {
+    setError(false)
     const requestOptions ={
       method: 'PUT',
       headers:{ Authorization: `Bearer ${token}`,},
-      body: JSON.stringify({title:values.title,url:values.url,detail:values.detail,review:values.review},
+      body: JSON.stringify({title:review.title,url:review.url,detail:review.detail,review:review.review},
       )
     };
     fetch(`https://api-for-missions-and-railways.herokuapp.com/books/` + Url.id,requestOptions,)
@@ -69,15 +54,21 @@ function BookEdit() {
         setErrorCodes(response.ErrorCode)
         setErrorMessageJP(response.ErrorMessageJP)
         setErrorMessageEN(response.ErrorMessageEN)
-        history.push({
-          pathname: '/detail/' + Url.id
-        })
+        if(response.ErrorCode){
+          setError(true)
+        }else{
+          history.push({
+            pathname: '/detail/' + Url.id
+          })
+          localStorage.setItem('message', '更新が完了しました')
+        }
       })
       .catch((error)=>{
       })
   }
 
   const handleDelete = () => {
+    setError(false)
     const requestOptions ={
       method: 'DELETE',
       headers:{ Authorization: `Bearer ${token}`,},
@@ -89,10 +80,16 @@ function BookEdit() {
         setErrorCodes(response.ErrorCode)
         setErrorMessageJP(response.ErrorMessageJP)
         setErrorMessageEN(response.ErrorMessageEN)
-        history.push('/')
+        if(response.ErrorCode){
+          setError(true)
+        }
       })
       .catch((error)=>{
       })
+      if(Error === false){
+        history.replace('/')
+        localStorage.setItem('message', '削除が完了しました')
+      }
   }
 
   const card = (
@@ -100,13 +97,51 @@ function BookEdit() {
       <CardMedia sx={{ width:{ xs: 400, md: 800 },height:60,m:'auto',pt:2,fontSize: 20,bgcolor:blueGrey[800],color:grey[50]}}>
           レビュー修正
       </CardMedia>
-      <CardContent sx={{m:'auto',width:{ xs: 400, md: 800 },border:1,borderColor: 'grey.500',boxShadow: 1}}>
-        <form onSubmit={handleSubmit(handleOnSubmit)}>
-
-        </form>
-        <CardActions>
-        
-        </CardActions>
+      <CardContent sx={{m:'auto',width:{ xs: 400, md: 800 },border:1,borderColor: 'grey.500',boxShadow: 1,bgcolor:grey[50]}}>
+        {Error === false?'':
+        <Alert severity="error">{errorCodes}  {ErrorMessageJP}-{ErrorMessageEN}</Alert>}
+        <TextField
+          fullWidth
+          id="standard-required"
+          label="タイトル"
+          defaultValue={review.title}
+          variant="standard"
+          onChange={event => setReview({ ...review, title: event.target.value })}
+          sx={{my:2}}
+        />
+        <TextField
+          fullWidth
+          id="standard-required"
+          label="商品ページURL"
+          defaultValue={review.url}
+          variant="standard"
+          onChange={event => setReview({ ...review, url: event.target.value })}
+          sx={{my:2}}
+        />
+        <TextField
+          fullWidth
+          id="standard-required"
+          label="あらすじ"
+          defaultValue={review.detail}
+          variant="standard"
+          multiline={true}
+          maxRows= {10}
+          onChange={event => setReview({ ...review, detail: event.target.value })}
+          sx={{my:2}}
+        />
+        <TextField
+          fullWidth
+          id="standard-required"
+          label="レビュー"
+          defaultValue={review.review}
+          variant="standard"
+          multiline={true}
+          maxRows= {10}
+          onChange={event => setReview({ ...review, review: event.target.value })}
+          sx={{my:2}}
+        />
+        <Button variant="contained" sx={{m:1}} onClick={handleSubmit} >更新</Button>
+        <Button variant="contained" sx={{m:1}} onClick={handleDelete} color='error'>削除</Button>
       </CardContent>
     </React.Fragment>
   );
@@ -114,54 +149,10 @@ function BookEdit() {
   return (
     <>
       {token === '' || token === null || token === 'undefined'?<Redirect to="/login" />:
-        <div className="formBodyEdit">
-          <h2>レビュー投稿</h2>
-          <p>{errorCodes} {ErrorMessageJP}</p>
-          <form onSubmit={handleSubmit(handleOnSubmit)}>
-            <input
-              defaultValue={review.title}
-              type="text"
-              {...register("title", {
-                minLength: 0,
-              })}
-            />
-            <div className="error">
-              {errors.title?.types?.minLength && "タイトルが入力されていません"}
-            </div>
-            <input
-              defaultValue={review.url}
-              type="text"
-              {...register("url", {
-                minLength: 0,
-              })}
-            />
-            <div className="error">
-              {errors.url?.types?.minLength && "商品URLが入力されていません"}
-            </div>
-            <textarea
-              defaultValue={review.detail}
-              {...register("detail", {
-                minLength: 0,
-              })}
-            />
-            <div className="error">
-              {errors.detail?.types?.minLength && "あらすじが入力されていません"}
-            </div>
-            <textarea
-              defaultValue={review.review}
-              {...register("review", {
-                minLength: 0,
-              })}
-            />
-            <div className="error">
-              {errors.review?.types?.minLength&& "レビューが入力されていません"}
-            </div>
-            <button type="submit">更新</button>
-          </form>
-          　<button type="submit" onClick={handleDelete}>削除</button>
+        <div>
           <Box sx={{ minWidth: 275}} >
-          <Card sx={{px:{ xs: 3, md: 10 },py:1}}>{card}</Card>
-        </Box>
+            <Card sx={{px:{ xs: 3, md: 10 },py:5,bgcolor:grey[200]}}>{card}</Card>
+          </Box>
         </div>
       }
     </>

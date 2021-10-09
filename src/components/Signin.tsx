@@ -1,8 +1,9 @@
 import React from 'react';
 import '../style/Form.css';
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 import { Redirect,useHistory } from 'react-router-dom';
 import { useForm, SubmitHandler } from 'react-hook-form';
+import { Alert } from '@mui/material';
 
 type Inputs= {
   email:string
@@ -14,7 +15,12 @@ function Signin() {
   const[ErrorMessageJP,setErrorMessageJP] = useState([])
   const[ErrorMessageEN,setErrorMessageEN] = useState([])
   const token = localStorage.getItem('token');
+  const message = localStorage.getItem('message');
   const history = useHistory();
+
+  useEffect(()=>{
+    setTimeout(() => localStorage.removeItem("message"), 500);
+  },[])
 
   const {
     register,
@@ -43,6 +49,7 @@ function Signin() {
         localStorage.setItem('token', response.token)
         console.log(response.token)
         if(response.token !== '' || response.token !== null || response.token !== undefined){
+          localStorage.setItem('message', 'ログインしました')
           history.replace('/');
         }
       })
@@ -53,6 +60,9 @@ function Signin() {
   return (
     <>
       {token === '' || token === null || token === 'undefined'?
+      <div>
+        {message?
+          <Alert severity="success">{message}</Alert>:''}
         <div className="formBody">
           <h2>ログイン</h2>
           <p>{errorCodes} {ErrorMessageJP}</p>
@@ -90,6 +100,7 @@ function Signin() {
             </a>
           </form>
         </div>
+      </div>
       :<Redirect to="/" />}
     </>
   );

@@ -9,6 +9,7 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
+import { Alert } from '@mui/material';
 import { Link } from '@mui/material';
 import { Avatar } from '@mui/material';
 import BookIcon from '@mui/icons-material/Book';
@@ -20,6 +21,7 @@ import { lightBlue } from '@mui/material/colors';
 function BookDetail() {
   const[review,setReview] = useState({id: "",title: "",url: "",detail: "",review: "",reviewer: "",isMine:true})
   const token = localStorage.getItem('token');
+  const message = localStorage.getItem('message');
   const Url: { id: string } = useParams();
   const history = useHistory();
 
@@ -36,6 +38,7 @@ function BookDetail() {
         setReview( res.data );
       })
     }
+    setTimeout(() => localStorage.removeItem("message"), 500);
   },[])
 
   const handleEdit = (event: any)=> {
@@ -102,6 +105,8 @@ function BookDetail() {
     <>
     {token === '' || token === null || token === 'undefined'?<Redirect to="/login" />:
       <div>
+        {message?
+        <Alert severity="success">{message}</Alert>:''}
         <Box sx={{ minWidth: 275}} >
           <Card sx={{px:{ xs: 3, md: 10 },py:1}}>{card}</Card>
         </Box>
