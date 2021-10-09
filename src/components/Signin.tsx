@@ -14,6 +14,7 @@ function Signin() {
   const[errorCodes,setErrorCodes] = useState([])
   const[ErrorMessageJP,setErrorMessageJP] = useState([])
   const[ErrorMessageEN,setErrorMessageEN] = useState([])
+  const[Error,setError] = useState(false)
   const token = localStorage.getItem('token');
   const message = localStorage.getItem('message');
   const history = useHistory();
@@ -33,6 +34,7 @@ function Signin() {
   });
 
   const handleOnSubmit: SubmitHandler<Inputs> = (values) => {
+    setError(false)
     const requestOptions ={
       method: 'POST',
       headers:{'Content-Type': 'application/json'},
@@ -47,8 +49,10 @@ function Signin() {
         setErrorMessageJP(response.ErrorMessageJP)
         setErrorMessageEN(response.ErrorMessageEN)
         localStorage.setItem('token', response.token)
-        console.log(response.token)
-        if(response.token !== '' || response.token !== null || response.token !== undefined){
+        console.log(response)
+        if(response.ErrorCode){
+          setError(true)
+        }else{
           localStorage.setItem('message', 'ログインしました')
           history.replace('/');
         }
@@ -65,19 +69,18 @@ function Signin() {
           <Alert severity="success">{message}</Alert>:''}
         <div className="formBody">
           <h2>ログイン</h2>
-          <p>{errorCodes} {ErrorMessageJP}</p>
+          {Error === false?'':
+            <Alert severity="error">{errorCodes}  {ErrorMessageJP}-{ErrorMessageEN}</Alert>}
           <form onSubmit={handleSubmit(handleOnSubmit)}>
             <input
               placeholder="メールアドレス"
               {...register("email", {
                 required: true,
-                maxLength: 10,
                 pattern: /[0-9a-zA-Z]/,
               })}
             />
             <div className="error">
               {errors.email?.types?.required && "メールアドレスが入力されていません"}
-              {errors.email?.types?.maxLength && "10文字以上が入力されています"}
               {errors.email?.types?.pattern && "英数字以外の文字が含まれています"}
             </div>
             <input

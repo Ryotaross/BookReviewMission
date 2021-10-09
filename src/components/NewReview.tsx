@@ -1,38 +1,32 @@
 import React from 'react';
 import '../style/Form.css';
 import { useState } from 'react';
-import { Redirect } from 'react-router-dom';
-import { useForm, SubmitHandler } from 'react-hook-form';
-
-type Inputs= {
-  title:string
-  url:string
-  detail:string
-  review:string
-}
-
+import { Redirect,useHistory } from 'react-router-dom';
+import Box from '@mui/material/Box';
+import Card from '@mui/material/Card';
+import TextField from '@mui/material/TextField';
+import { Alert } from '@mui/material';
+import Button from '@mui/material/Button';
+import { CardMedia } from '@mui/material';
+import CardContent from '@mui/material/CardContent';
+import { blueGrey } from '@mui/material/colors';
+import { grey } from '@mui/material/colors';
 
 function NewReview() {
+  const[review,setReview] = useState({id: "",title: "",url: "",detail: "",review: "",reviewer: ""})
   const[errorCodes,setErrorCodes] = useState([])
   const[ErrorMessageJP,setErrorMessageJP] = useState([])
   const[ErrorMessageEN,setErrorMessageEN] = useState([])
+  const[Error,setError] = useState(false)
   const token = localStorage.getItem('token');
+  const history = useHistory();
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<Inputs>({
-    mode: "onChange",
-    criteriaMode: "all",
-    shouldFocusError: false,
-  });
-
-  const handleOnSubmit: SubmitHandler<Inputs> = (values) => {
+  const handleSubmit = () => {
+    setError(false)
     const requestOptions ={
       method: 'POST',
       headers:{ Authorization: `Bearer ${token}`,},
-      body: JSON.stringify({title:values.title,url:values.url,detail:values.detail,review:values.review},
+      body: JSON.stringify({title:review.title,url:review.url,detail:review.detail,review:review.review},
       )
     };
     fetch("https://api-for-missions-and-railways.herokuapp.com/books",requestOptions,)
@@ -42,58 +36,73 @@ function NewReview() {
         setErrorCodes(response.ErrorCode)
         setErrorMessageJP(response.ErrorMessageJP)
         setErrorMessageEN(response.ErrorMessageEN)
+        if(response.ErrorCode){
+          setError(true)
+        }else{
+          history.replace('/')
+          localStorage.setItem('message', '投稿しました')
+        }
       })
       .catch((error)=>{
       })
   }
 
+  const card = (
+    <React.Fragment >
+      <CardMedia sx={{ width:{ xs: 400, md: 800 },height:60,m:'auto',pt:2,fontSize: 20,bgcolor:blueGrey[800],color:grey[50]}}>
+          レビュー修正
+      </CardMedia>
+      <CardContent sx={{m:'auto',width:{ xs: 400, md: 800 },border:1,borderColor: 'grey.500',boxShadow: 1,bgcolor:grey[50]}}>
+        {Error === false?'':
+        <Alert severity="error">{errorCodes}  {ErrorMessageJP}-{ErrorMessageEN}</Alert>}
+        <TextField
+          fullWidth
+          id="standard-required"
+          label="タイトル"
+          variant="standard"
+          onChange={event => setReview({ ...review, title: event.target.value })}
+          sx={{my:2}}
+        />
+        <TextField
+          fullWidth
+          id="standard-required"
+          label="商品ページURL"
+          variant="standard"
+          onChange={event => setReview({ ...review, url: event.target.value })}
+          sx={{my:2}}
+        />
+        <TextField
+          fullWidth
+          id="standard-required"
+          label="あらすじ"
+          variant="standard"
+          multiline={true}
+          maxRows= {10}
+          onChange={event => setReview({ ...review, detail: event.target.value })}
+          sx={{my:2}}
+          />
+        <TextField
+          fullWidth
+          id="standard-required"
+          label="レビュー"
+          variant="standard"
+          multiline={true}
+          maxRows= {10}
+          onChange={event => setReview({ ...review, review: event.target.value })}
+          sx={{my:2}}
+        />
+        <Button variant="contained" sx={{m:1}} onClick={handleSubmit} >投稿</Button>
+      </CardContent>
+    </React.Fragment>
+  );
+
   return (
     <>
       {token === '' || token === null || token === 'undefined'?<Redirect to="/login" />:
-        <div className="formBody">
-          <h2>レビュー投稿</h2>
-          <p>{errorCodes} {ErrorMessageJP}</p>
-          <form onSubmit={handleSubmit(handleOnSubmit)}>
-            <input
-              placeholder="タイトル"
-              type="text"
-              {...register("title", {
-                required: true,
-              })}
-            />
-            <div className="error">
-              {errors.title?.types?.required && "タイトルが入力されていません"}
-            </div>
-            <input
-              placeholder="商品URL"
-              type="text"
-              {...register("url", {
-                required: true,
-              })}
-            />
-            <div className="error">
-              {errors.url?.types?.required && "商品URLが入力されていません"}
-            </div>
-            <textarea
-              placeholder="あらすじ"
-              {...register("detail", {
-                required: true,
-              })}
-            />
-            <div className="error">
-              {errors.detail?.types?.required && "あらすじが入力されていません"}
-            </div>
-            <textarea
-              placeholder="レビュー"
-              {...register("review", {
-                required: true,
-              })}
-            />
-            <div className="error">
-              {errors.review?.types?.required && "レビューが入力されていません"}
-            </div>
-            <button type="submit">投稿</button>
-          </form>
+        <div>
+          <Box sx={{ minWidth: 275}} >
+            <Card sx={{px:{ xs: 3, md: 10 },py:5,bgcolor:grey[200]}}>{card}</Card>
+          </Box>
         </div>
       }
     </>

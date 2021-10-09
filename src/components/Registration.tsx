@@ -3,6 +3,7 @@ import '../style/Form.css';
 import { useState } from 'react';
 import { Redirect,useHistory } from 'react-router-dom';
 import { useForm, SubmitHandler } from 'react-hook-form';
+import { Alert } from '@mui/material';
 
 type Inputs= {
   name:string
@@ -14,6 +15,7 @@ function Registration() {
   const[errorCodes,setErrorCodes] = useState([])
   const[ErrorMessageJP,setErrorMessageJP] = useState([])
   const[ErrorMessageEN,setErrorMessageEN] = useState([])
+  const[Error,setError] = useState(false)
   const token = localStorage.getItem('token');
   const history = useHistory();
 
@@ -43,7 +45,9 @@ function Registration() {
         setErrorMessageJP(response.ErrorMessageJP)
         setErrorMessageEN(response.ErrorMessageEN)
         localStorage.setItem('token', response.token)
-        if(response.token !== '' || response.token !== null || response.token !== undefined){
+        if(response.ErrorCode){
+          setError(true)
+        }else{
           localStorage.setItem('message', '登録が完了しました')
           history.replace('/');
         }
@@ -57,20 +61,17 @@ function Registration() {
       {token === '' || token === null || token === 'undefined'?
         <div className="formBody">
           <h2>新規登録</h2>
-          <p>{errorCodes} {ErrorMessageJP}</p>
+          {Error === false?'':
+            <Alert severity="error">{errorCodes}  {ErrorMessageJP}-{ErrorMessageEN}</Alert>}
           <form onSubmit={handleSubmit(handleOnSubmit)}>
             <input
               placeholder="ユーザーネーム"
               {...register("name", {
                 required: true,
-                maxLength: 10,
-                pattern: /[0-9a-zA-Z]/,
               })}
             />
             <div className="error">
               {errors.name?.types?.required && "ユーザーネームが入力されていません"}
-              {errors.name?.types?.maxLength && "10文字以上が入力されています"}
-              {errors.name?.types?.pattern && "英数字以外の文字が含まれています"}
               </div>
             <input
               placeholder="メールアドレス"
