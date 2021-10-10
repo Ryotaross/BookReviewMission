@@ -49,7 +49,6 @@ function Signin() {
         setErrorMessageJP(response.ErrorMessageJP)
         setErrorMessageEN(response.ErrorMessageEN)
         localStorage.setItem('token', response.token)
-        console.log(response)
         if(response.ErrorCode){
           setError(true)
         }else{

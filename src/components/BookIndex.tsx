@@ -12,15 +12,18 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { Alert } from '@mui/material';
 import { Avatar } from '@mui/material';
+import { Link } from '@mui/material';
 import { blueGrey } from '@mui/material/colors';
 import { grey } from '@mui/material/colors';
 import { lightBlue } from '@mui/material/colors';
 import BookIcon from '@mui/icons-material/Book';
 import PersonIcon from '@mui/icons-material/Person';
+import LoadingInterface from './LoadingInterface';
 
 function BookIndex() {
   const[reviews,setReviews] = useState([{id: "",title: "",url: "",detail: "",review: "",reviewer: "",isMine:true}])
   const[loginUser,setLoginUser] = useState<any>([{name:''}]);
+  const[loading,setLoading] = useState(true);
   const token = localStorage.getItem('token');
   const message = localStorage.getItem('message');
   const history = useHistory();
@@ -30,6 +33,7 @@ function BookIndex() {
       axios.get(`https://api-for-missions-and-railways.herokuapp.com/public/books`)
       .then(res => {
         setReviews( res.data );
+        setLoading(false)
       })
     }else{
       axios.get(`https://api-for-missions-and-railways.herokuapp.com/books`,{
@@ -47,7 +51,7 @@ function BookIndex() {
       })
       .then(res => {
         setLoginUser(res.data);
-        console.log(loginUser);
+        setLoading(false)
       })
     }
     setTimeout(() => localStorage.removeItem("message"), 2000);
@@ -104,7 +108,9 @@ function BookIndex() {
           {review.review}
         </Typography>
         <Typography sx={{ display:'flex',my:1,ml:2,fontSize: 13 ,textAlign:'left',color:blueGrey[200]}} gutterBottom className="indexTitle">
-          <BookIcon /><div className="indexTitleName">{review.title}</div>
+          <BookIcon /><div className="indexTitleName"><Link href={review.url} underline="none" color={blueGrey[200]}>
+          {review.title}
+        </Link></div>
         </Typography>
         <CardActions>
           <Button size="small" onClick={handleDetail} value={review.id} sx={{color:lightBlue[500]}}>詳しく見る</Button>
@@ -120,7 +126,7 @@ function BookIndex() {
     {token === '' || token === null || token === 'undefined'?<Redirect to="/login" />:
       <div>
         {message?
-        <Alert severity="success">{message}</Alert>:''}
+          <Alert severity="success">{message}</Alert>:''}
         <Box sx={{bgcolor: 'background.paper',pt: 8,pb: 6}}>
           <Container maxWidth="sm">
             <Typography
@@ -143,7 +149,8 @@ function BookIndex() {
           <Typography variant="body1" align="right" color="text.secondary" sx={{ml:3,display:'flex'}} paragraph>
             <PersonIcon /><div>{loginUser.name}</div>    
           </Typography>
-          <Card sx={{display:'flex',flexWrap: 'wrap',alignItems:'flex-start',px:{ xs: 3, md: 10 },py:1,bgcolor:grey[200]}}>{card}</Card>
+          {loading?<LoadingInterface />:
+          <Card sx={{display:'flex',flexWrap: 'wrap',alignItems:'flex-start',px:{ xs: 3, md: 10 },py:1,bgcolor:grey[200]}}>{card}</Card>}
         </Box>
       </div>
     }

@@ -18,6 +18,7 @@ import { CardMedia } from '@mui/material';
 import CardContent from '@mui/material/CardContent';
 import { blueGrey } from '@mui/material/colors';
 import { grey } from '@mui/material/colors';
+import LoadingInterface from './LoadingInterface';
 
 function BookEdit() {
   const[review,setReview] = useState({id: "",title: "",url: "",detail: "",review: "",reviewer: ""})
@@ -27,6 +28,7 @@ function BookEdit() {
   const[Error,setError] = useState(false)
   const[openDelete, setOpenDelete] = useState(false);
   const[openEdit, setOpenEdit] = useState(false);
+  const[loading,setLoading] = useState(true);
   const token = localStorage.getItem('token');
   const Url: { id: string } = useParams();
   const history = useHistory();
@@ -42,6 +44,7 @@ function BookEdit() {
       })
       .then(res => {
         setReview( res.data );
+        setLoading(false)
       })
     }
   },[])
@@ -87,15 +90,17 @@ function BookEdit() {
         setErrorCodes(response.ErrorCode)
         setErrorMessageJP(response.ErrorMessageJP)
         setErrorMessageEN(response.ErrorMessageEN)
+        history.push('/')
         if(response.ErrorCode){
-          setError(true)
+          setError(true) 
         }
       })
       .catch((error)=>{
       })
       if(Error === false){
-        history.replace('/')
         localStorage.setItem('message', '削除が完了しました')
+      }else{
+        localStorage.setItem('error', '削除が失敗しました')
       }
   }
 
@@ -226,7 +231,8 @@ function BookEdit() {
       {token === '' || token === null || token === 'undefined'?<Redirect to="/login" />:
         <div>
           <Box sx={{ minWidth: 275}} >
-            <Card sx={{px:{ xs: 3, md: 10 },py:5,bgcolor:grey[200]}}>{card}</Card>
+          {loading?<LoadingInterface />:
+            <Card sx={{px:{ xs: 3, md: 10 },py:5}}>{card}</Card>}
           </Box>
         </div>
       }

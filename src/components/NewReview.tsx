@@ -145,7 +145,7 @@ function NewReview() {
       {token === '' || token === null || token === 'undefined'?<Redirect to="/login" />:
         <div>
           <Box sx={{ minWidth: 275}} >
-            <Card sx={{px:{ xs: 3, md: 10 },py:5,bgcolor:grey[200]}}>{card}</Card>
+            <Card sx={{px:{ xs: 3, md: 10 },py:5}}>{card}</Card>
           </Box>
         </div>
       }

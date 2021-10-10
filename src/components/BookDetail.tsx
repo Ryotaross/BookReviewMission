@@ -17,11 +17,13 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { blueGrey } from '@mui/material/colors';
 import { grey } from '@mui/material/colors';
 import { lightBlue } from '@mui/material/colors';
+import LoadingInterface from './LoadingInterface';
 
 function BookDetail() {
   const[review,setReview] = useState({id: "",title: "",url: "",detail: "",review: "",reviewer: "",isMine:true})
   const token = localStorage.getItem('token');
   const message = localStorage.getItem('message');
+  const[loading,setLoading] = useState(true);
   const Url: { id: string } = useParams();
   const history = useHistory();
 
@@ -36,6 +38,7 @@ function BookDetail() {
       })
       .then(res => {
         setReview( res.data );
+        setLoading(false)
       })
     }
     setTimeout(() => localStorage.removeItem("message"), 500);
@@ -108,7 +111,8 @@ function BookDetail() {
         {message?
         <Alert severity="success">{message}</Alert>:''}
         <Box sx={{ minWidth: 275}} >
-          <Card sx={{px:{ xs: 3, md: 10 },py:1}}>{card}</Card>
+        {loading?<LoadingInterface />:
+          <Card sx={{px:{ xs: 3, md: 10 },py:1}}>{card}</Card>}
         </Box>
       </div>
     }
