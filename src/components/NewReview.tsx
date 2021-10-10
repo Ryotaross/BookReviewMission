@@ -7,15 +7,11 @@ import Card from '@mui/material/Card';
 import TextField from '@mui/material/TextField';
 import { Alert } from '@mui/material';
 import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
 import { CardMedia } from '@mui/material';
 import CardContent from '@mui/material/CardContent';
 import { blueGrey } from '@mui/material/colors';
 import { grey } from '@mui/material/colors';
+import DialogInterface from './Dialog';
 
 function NewReview() {
   const[review,setReview] = useState({id: "",title: "",url: "",detail: "",review: "",reviewer: ""})
@@ -106,36 +102,7 @@ function NewReview() {
           sx={{my:2}}
         />
         <Button variant="contained" sx={{m:1}} onClick={handleClickOpen} >投稿</Button>
-        <Dialog
-          open={open}
-          onClose={handleClose}
-          aria-labelledby="alert-dialog-title"
-          aria-describedby="alert-dialog-description"
-        >
-          <DialogTitle id="alert-dialog-title">
-            以下の内容で投稿しますか？
-          </DialogTitle>
-          <DialogContent>
-            <DialogContentText id="alert-dialog-description">
-              書籍タイトル：{review.title}
-            </DialogContentText>
-            <DialogContentText id="alert-dialog-description">
-              書籍URL：{review.url}
-            </DialogContentText>
-            <DialogContentText id="alert-dialog-description">
-              あらすじ：{review.detail}
-            </DialogContentText>
-            <DialogContentText id="alert-dialog-description">
-              レビュー：{review.review}
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleClose}>キャンセル</Button>
-            <Button onClick={handleSubmit} autoFocus>
-              投稿
-            </Button>
-          </DialogActions>
-        </Dialog>
+        <DialogInterface open={open} handleClose={handleClose} review={review} handleSubmit={handleSubmit} type="create" button="投稿" />
       </CardContent>
     </React.Fragment>
   );

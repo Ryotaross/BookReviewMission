@@ -9,16 +9,12 @@ import Card from '@mui/material/Card';
 import TextField from '@mui/material/TextField';
 import { Alert } from '@mui/material';
 import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
 import { CardMedia } from '@mui/material';
 import CardContent from '@mui/material/CardContent';
 import { blueGrey } from '@mui/material/colors';
 import { grey } from '@mui/material/colors';
 import LoadingInterface from './LoadingInterface';
+import DialogInterface from './Dialog';
 
 function BookEdit() {
   const[review,setReview] = useState({id: "",title: "",url: "",detail: "",review: "",reviewer: ""})
@@ -169,59 +165,9 @@ function BookEdit() {
           sx={{my:2}}
         />
         <Button variant="contained" sx={{m:1}} onClick={handleClickOpenEdit} >更新</Button>
-        <Dialog
-          open={openEdit}
-          onClose={handleCloseEdit}
-          aria-labelledby="alert-dialog-title"
-          aria-describedby="alert-dialog-description"
-        >
-          <DialogTitle id="alert-dialog-title">
-            以下の内容で更新しますか？
-          </DialogTitle>
-          <DialogContent>
-            <DialogContentText id="alert-dialog-description">
-              書籍タイトル：{review.title}
-            </DialogContentText>
-            <DialogContentText id="alert-dialog-description">
-              書籍URL：{review.url}
-            </DialogContentText>
-            <DialogContentText id="alert-dialog-description">
-              あらすじ：{review.detail}
-            </DialogContentText>
-            <DialogContentText id="alert-dialog-description">
-              レビュー：{review.review}
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleCloseEdit}>キャンセル</Button>
-            <Button onClick={handleEdit} autoFocus>
-              更新
-            </Button>
-          </DialogActions>
-        </Dialog>
-
+        <DialogInterface open={openEdit} handleClose={handleCloseEdit} review={review} handleSubmit={handleEdit} type="create" button="更新" />
         <Button variant="contained" sx={{m:1}} onClick={handleClickOpenDelete} color='error'>削除</Button>
-        <Dialog
-          open={openDelete}
-          onClose={handleCloseDelete}
-          aria-labelledby="alert-dialog-title"
-          aria-describedby="alert-dialog-description"
-        >
-          <DialogTitle id="alert-dialog-title">
-            本当に削除しますか？
-          </DialogTitle>
-          <DialogContent>
-            <DialogContentText id="alert-dialog-description">
-              削除するともとには戻せません
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleCloseDelete}>キャンセル</Button>
-            <Button onClick={handleDelete} autoFocus color='error'>
-              削除
-            </Button>
-          </DialogActions>
-        </Dialog>
+        <DialogInterface open={openDelete} handleClose={handleCloseDelete} handleSubmit={handleDelete} type="delete" />
       </CardContent>
     </React.Fragment>
   );
